@@ -11,26 +11,28 @@ OPTIONS:
    -f      Fastq/fasta file of forward reads
    -r      Fastq/fasta file of reverse reads
    -v      Absolute path to the vocabulary file (path/to/tokens_merged_12mers.txt)
+   -d      Absolute path of directory containing scripts (/path/to/DeepMicrobes/scripts)
    -o      Output name prefix
    -s      (Optional) Number of sequences per file for splitting (default: 4000000)
    -k      (Optional) k-mer length (default: 12)
    -t      (Optional) Sequence type fastq/fasta (default: fastq)
 
 EXAMPLE:
-./tfrec_predict_kmer.sh -f sample_R1.fastq -r sample_R2.fastq -t fastq -v /path/to/vocab/tokens_merged_12mers.txt -o sample_name -s 4000000 -k 12
+./tfrec_predict_kmer.sh -f sample_R1.fastq -r sample_R2.fastq -t fastq -v /path/to/vocab/tokens_merged_12mers.txt -d /path/to/DeepMicrobes/scripts -o sample_name -s 4000000 -k 12
 EOF
 }
 
 forward=
 reverse=
 vocab=
+script_dir=
 output_name=
 split_seq=
 kmer=
 seq_type=
 
 
-while getopts “f:r:v:o:s:k:t:” OPTION
+while getopts “f:r:v:d:o:s:k:t:” OPTION
 do
      case ${OPTION} in
          f)
@@ -41,6 +43,9 @@ do
              ;;
          v)
              vocab=${OPTARG}
+             ;;
+         d)
+             script_dir=${OPTARG}
              ;;
          o)
              output_name=${OPTARG}
@@ -62,7 +67,7 @@ do
 done
 
 
-if [[ -z ${forward} ]] || [[ -z ${reverse} ]] || [[ -z ${vocab} ]] || [[ -z ${output_name} ]]
+if [[ -z ${forward} ]] || [[ -z ${reverse} ]] || [[ -z ${vocab} ]] || [[ -z ${script_dir} ]] || [[ -z ${output_name} ]]
 then
 	echo "ERROR : Please supply required arguments"
 	usage
@@ -85,9 +90,8 @@ else
 	exit 1
 fi
 
-fragment_num=$(( ${split_seq} % 4 ))
 
-if [ ${fragment_num} != 0 ]
+if [ $((${split_seq} % 4)) != 0 ];
 then
 	echo "ERROR: The number of sequences per file must a multiple of 4 for paired-end data"
 	exit 1
@@ -129,8 +133,15 @@ if [ ! -e ${vocab} ]; then
 	exit 1
 fi
 
-if [ ! -x "$(command -v seq2tfrec_kmer.py)" ]; then
-    echo "ERROR: Please add /path/to/DeepMicrobes/scripts dictionary to path"
+if [ ! -d ${script_dir} ];then
+    echo "ERROR : Missing the dictionary containing seq2tfrec_kmer.py!"
+    usage
+    exit 1
+fi
+
+if [ ! -e ${script_dir}/seq2tfrec_kmer.py ]; then
+    echo "ERROR : Missing seq2tfrec_kmer.py!"
+	usage
 	exit 1
 fi
 
@@ -167,10 +178,10 @@ echo "======================================"
 echo "3. Converting to TFRecord..."
 ls subset* > tmp_${seq_type}_list
 
-cat tmp_${seq_type}_list | parallel seq2tfrec_kmer.py \
+cat tmp_${seq_type}_list | parallel python ${script_dir}/seq2tfrec_kmer.py \
 	--input_seq={} --output_tfrec={}.${kmer}mer.tfrec \
 	--vocab=${vocab} --kmer=${kmer} \
-	--seq_type=${seq_type}
+	--is_train=False --seq_type=${seq_type}
 	
 for seq in $(cat tmp_${seq_type}_list)
 do
@@ -186,4 +197,3 @@ cd ..
 rmdir tmp_tfrec_${output_name}
 
 echo "Finished."
-
