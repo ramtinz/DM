@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -46,7 +44,6 @@ def training_set_read_parser(rec):
     Species taxon ids are assumed to be available in read names.
     (E.g. for read with name >NC_018018.1|999|GCF_000265505.1-200000,
     999 is parsed as its species taxon id.)
-
     Returns:
         seq: string, the DNA sequences.
         label_id: int, zero-based id of each species for training.
@@ -110,11 +107,10 @@ def training_set_convert2tfrecord(input_seq, output_tfrec, kmer, vocab, seq_type
         kmer: int, size of k for reads splitting.
         vocab: string, path to the vocabulary file containing all k-mer tokens.
         seq_type: string, reads format, should be fasta or fastq.
-
     """
-    tf.logging.info("Parsing vocabulary")
+    tf.compat.v1.logging.info("Parsing vocabulary")
     word_to_dic = vocab_dict(vocab)
-    with tf.python_io.TFRecordWriter(output_tfrec) as writer:
+    with tf.io.TFRecordWriter(output_tfrec) as writer:
         with open(input_seq) as handle:
             for rec in SeqIO.parse(handle, seq_type):
                 seq, label_id = training_set_read_parser(rec)
@@ -138,11 +134,10 @@ def test_set_convert2tfrecord(input_seq, output_tfrec, kmer, vocab, seq_type):
         kmer: int, size of k for reads splitting.
         vocab: string, path to the vocabulary file containing all k-mer tokens.
         seq_type: string, reads format, should be fasta or fastq.
-
     """
-    tf.logging.info("Parsing vocabulary")
+    tf.compat.v1.logging.info("Parsing vocabulary")
     word_to_dic = vocab_dict(vocab)
-    with tf.python_io.TFRecordWriter(output_tfrec) as writer:
+    with tf.io.TFRecordWriter(output_tfrec) as writer:
         with open(input_seq) as handle:
             for rec in SeqIO.parse(handle, seq_type):
                 seq = test_set_read_parser(rec)
@@ -165,11 +160,11 @@ def main_deprecation(unused_argv):
         'Please provide input fasta or fastq.')
 
     if FLAGS.is_train:
-        tf.logging.info("Processing training/eval set")
+        tf.compat.v1.logging.info("Processing training/eval set")
         training_set_convert2tfrecord(FLAGS.input_seq, FLAGS.output_tfrec,
                                       FLAGS.kmer, FLAGS.vocab, FLAGS.seq_type)
     else:
-        tf.logging.info("Processing test set")
+        tf.compat.v1.logging.info("Processing test set")
         test_set_convert2tfrecord(FLAGS.input_seq, FLAGS.output_tfrec,
                                   FLAGS.kmer, FLAGS.vocab, FLAGS.seq_type)
 
@@ -226,19 +221,18 @@ def main():
         'Please provide input fasta or fastq.')
 
     if is_train:
-        tf.logging.info("Processing training/eval set")
+        tf.compat.v1.logging.info("Processing training/eval set")
         training_set_convert2tfrecord(input_seq, output_tfrec, kmer, vocab, seq_type)
     else:
-        tf.logging.info("Processing test set")
+        tf.compat.v1.logging.info("Processing test set")
         test_set_convert2tfrecord(input_seq, output_tfrec, kmer, vocab, seq_type)
     return
 
 
 
 if __name__ == "__main__":
-    tf.logging.set_verbosity(tf.logging.INFO)
+    tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
     #define_seq2tfrec_flags()
     #FLAGS = flags.FLAGS
     #absl_app.run(main)
     main()
-
