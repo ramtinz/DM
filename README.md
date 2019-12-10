@@ -1,4 +1,6 @@
-# DeepMicrobes
+# DeepMicrobes (forked version)
+
+NB: This is a copy of MicrobeLab/DeepMicrobes to fix the errors I faced with. Any comment or contribution to the current repository is appreciated. The following information is provided by the author of the main repository:
 
 DeepMicrobes: taxonomic classification for metagenomics with deep learning <br>
 Supplementary data for the paper under preparation is available at https://github.com/MicrobeLab/DeepMicrobes-data <br>
@@ -25,3 +27,6 @@ We are committed to maintain this repository to assist users and tackle errors.
 
 <b>Email</b>
 * liangqx7@mail2.sysu.edu.cn (Qiaoxing Liang)
+
+<b>Email to the contributor to the current fork</b>
+* ramtin.zargari@gmail.com
