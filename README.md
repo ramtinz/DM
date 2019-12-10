@@ -25,8 +25,5 @@ Supplementary data for the paper under preparation is available at https://githu
 Any issues with the DeepMicrobes framework can be filed with [GitHub issue tracker](https://github.com/MicrobeLab/DeepMicrobes/issues).
 We are committed to maintain this repository to assist users and tackle errors. 
 
-<b>Email</b>
-* liangqx7@mail2.sysu.edu.cn (Qiaoxing Liang)
-
 <b>Email to the contributor to the current fork</b>
 * ramtin.zargari@gmail.com
