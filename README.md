@@ -1,9 +1,7 @@
-# DeepMicrobes (forked version)
-
-NB: This is a copy of MicrobeLab/DeepMicrobes to fix the errors I faced with. Any comment or contribution to the current repository is appreciated. The following information is provided by the author of the main repository:
+# DeepMicrobes
 
 DeepMicrobes: taxonomic classification for metagenomics with deep learning <br>
-Supplementary data for the paper under preparation is available at https://github.com/MicrobeLab/DeepMicrobes-data <br>
+Supplementary data for the paper is available at https://github.com/MicrobeLab/DeepMicrobes-data <br>
 <b>IMPORTANT: The new DeepMicrobes (beta version) is available now. Please feel free to contact us if you have any suggestions or encounter any errors.</b>
 
 ## Usage
@@ -25,5 +23,12 @@ Supplementary data for the paper under preparation is available at https://githu
 Any issues with the DeepMicrobes framework can be filed with [GitHub issue tracker](https://github.com/MicrobeLab/DeepMicrobes/issues).
 We are committed to maintain this repository to assist users and tackle errors. 
 
-<b>Email to the contributor to the current fork</b>
-* ramtin.zargari@gmail.com
+<b>Email</b>
+* liangqx7@mail2.sysu.edu.cn (Qiaoxing Liang)
+
+
+
+## Citation
+
+Future changes:
+Qiaoxing Liang, Paul W Bible, Yu Liu, Bin Zou, Lai Wei, [DeepMicrobes: taxonomic classification for metagenomics with deep learning](https://doi.org/10.1093/nargab/lqaa009), NAR Genomics and Bioinformatics, Volume 2, Issue 1, March 2020, lqaa009, https://doi.org/10.1093/nargab/lqaa009
